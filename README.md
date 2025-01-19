@@ -1,4 +1,4 @@
-# TreeCopy
+# TreeCopy 🌲
 
 A command-line tool that generates a tree structure of directories and copies it to the clipboard.
 
