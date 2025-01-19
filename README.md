@@ -7,32 +7,35 @@ A command-line tool that generates a tree structure of directories and copies it
 - Generates tree structure of directories
 - Automatically copies output to clipboard
 - Respects .gitignore patterns
-- Ignores common directories like .git, __pycache__, node_modules
-- Clean, readable output format
+- Ignores common directories like .git, \__pycache__, node_modules
 
-## Installation
+## Quick Usage
 
-You can install TreeCopy using either uv or pip:
-
-### Using uv (recommended)
+Run directly without installing:
 
 ```bash
+uv run https://raw.githubusercontent.com/moot20/treecopy/main/treecopy.py /path/to/directory
+```
+
+## Installation (optional)
+
+If you prefer to install it as a command:
+
+```bash
+# Using uv (recommended)
 uv pip install git+https://github.com/moot20/treecopy.git
-```
 
-### Using pip
-
-```bash
+# Using pip
 python -m pip install git+https://github.com/moot20/treecopy.git
+
+# Then use it as a command
+treecopy /path/to/directory
 ```
 
-## Usage
+## Options
 
 ```bash
-# Generate tree structure and copy to clipboard (default)
-treecopy /path/to/directory
-
-# Generate tree structure without copying to clipboard
+# Don't copy to clipboard
 treecopy /path/to/directory --no-clipboard
 ```
 
@@ -53,7 +56,7 @@ my-project/
 ## Requirements
 
 - Python 3.12 or higher
-- Dependencies are automatically installed:
+- Dependencies (automatically installed by uv):
   - click
   - pyperclip
   - pathspec
