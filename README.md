@@ -6,6 +6,7 @@ A command-line tool that generates a tree structure of directories and copies it
 
 - Generates tree structure of directories
 - Automatically copies output to clipboard
+- Easy to use with LLMs like Claude or ChatGPT for context
 - Respects .gitignore patterns
 - Ignores common directories like .git, \__pycache__, node_modules
 
