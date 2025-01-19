@@ -1,0 +1,24 @@
+[project]
+name = "treecopy"
+version = "0.1.0"
+description = "Directory tree structure generator with clipboard support"
+authors = [{ name = "Moritz Ottenbacher"}]
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = [
+    "click>=8.0.0",
+    "pyperclip>=1.8.0",
+    "pathspec>=0.11.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/moot20/treecopy"
+Repository = "https://github.com/moot20/treecopy.git"
+
+[project.scripts]
+treecopy = "treecopy.cli:cli"
+
+[build-system]
+requires = ["hatchling>=1.18.0"]
+build-backend = "hatchling.build"
