@@ -24,10 +24,14 @@ If you prefer to install it as a command:
 ```bash
 # Using uv (recommended)
 uv pip install git+https://github.com/moot20/treecopy.git
+```
 
+```bash
 # Using pip
 python -m pip install git+https://github.com/moot20/treecopy.git
+```
 
+```bash
 # Then use it as a command
 treecopy /path/to/directory
 ```
