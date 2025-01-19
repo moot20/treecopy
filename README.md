@@ -12,6 +12,21 @@ A command-line tool that generates a tree structure of directories and copies it
 - Respects .gitignore patterns
 - Ignores common directories like .git, \__pycache__, node_modules
 
+**Example Output**
+
+```
+my-project/
+├── src/
+│   ├── main.py
+│   └── utils/
+│       └── helpers.py
+├── tests/
+│   └── test_main.py
+├── README.md
+└── pyproject.toml
+```
+
+
 ## Quick Usage
 
 Run directly without installing:
@@ -44,20 +59,6 @@ treecopy /path/to/directory
 ```bash
 # Don't copy to clipboard
 treecopy /path/to/directory --no-clipboard
-```
-
-## Example Output
-
-```
-my-project/
-├── src/
-│   ├── main.py
-│   └── utils/
-│       └── helpers.py
-├── tests/
-│   └── test_main.py
-├── README.md
-└── pyproject.toml
 ```
 
 ## Requirements
