@@ -32,7 +32,7 @@ my-project/
 Run directly without installing:
 
 ```bash
-uv run https://raw.githubusercontent.com/moot20/treecopy/main/treecopy.py /path/to/directory
+uv run https://raw.githubusercontent.com/moot20/treecopy/main/src/treecopy/cli.py /path/to/directory
 ```
 
 ## Installation (optional)
