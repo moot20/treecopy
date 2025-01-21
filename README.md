@@ -61,6 +61,11 @@ treecopy /path/to/directory
 treecopy /path/to/directory --no-clipboard
 ```
 
+```bash
+# Add custom patterns to ignore
+treecopy /path/to/directory -i "*.log" -i "temp_*" -i "build"
+```
+
 ## Requirements
 
 - Python 3.12 or higher

@@ -1,11 +1,34 @@
 from pathlib import Path
+from typing import Set
 import click
 import pyperclip
 import pathspec
 
 class DirectoryTree:
-    def __init__(self, root_dir: Path):
+    # Default configuration
+    DEFAULT_IGNORE_PATTERNS: Set[str] = {
+        '.git',
+        '__pycache__',
+        'node_modules',
+        '.env',
+        '.idea',
+        '.vscode',
+        '*.pyc',
+        '*.pyo',
+        '*.pyd',
+        '.DS_Store'
+    }
+
+    def __init__(self, root_dir: Path, ignore_patterns: Set[str] | None = None):
+        """
+        Initialize the DirectoryTree generator.
+        
+        Args:
+            root_dir: Root directory to generate tree from
+            ignore_patterns: Optional set of patterns to ignore. If None, uses DEFAULT_IGNORE_PATTERNS
+        """
         self.root_dir = root_dir
+        self.ignore_patterns = ignore_patterns if ignore_patterns is not None else self.DEFAULT_IGNORE_PATTERNS
         self.gitignore_spec = self._load_gitignore()
 
     def _load_gitignore(self) -> pathspec.PathSpec | None:
@@ -32,20 +55,34 @@ class DirectoryTree:
         return None
 
     def should_ignore(self, path: Path) -> bool:
-        """Check if a path should be ignored based on default patterns and .gitignore rules."""
-        # Default patterns to always ignore
-        if path.name in {'.git', '__pycache__', 'node_modules', '.env'}:
-            return True
+        """
+        Check if a path should be ignored based on configured patterns and .gitignore rules.
         
-        if self.gitignore_spec is not None:
-            try:
-                # Get relative path from root directory for gitignore matching
+        Args:
+            path: Path to check
+            
+        Returns:
+            bool: True if the path should be ignored, False otherwise
+        """
+        try:
+            # Check against configured ignore patterns
+            if path.name in self.ignore_patterns:
+                return True
+            
+            # Check file extensions
+            if any(pattern.startswith('*.') and path.name.endswith(pattern[1:]) 
+                  for pattern in self.ignore_patterns):
+                return True
+            
+            # Check gitignore patterns if available
+            if self.gitignore_spec is not None:
                 rel_path = str(path.relative_to(self.root_dir))
                 return self.gitignore_spec.match_file(rel_path)
-            except ValueError as e:
-                click.echo(f"Warning: Error processing path {path}: {e}", err=True)
-                return False
-        return False
+            
+            return False
+        except ValueError as e:
+            click.echo(f"Warning: Error processing path {path}: {e}", err=True)
+            return False
 
     def _generate_tree(self, directory: Path, prefix: str = "", is_last: bool = True) -> str:
         """Generate tree structure for a directory and its contents."""
@@ -103,10 +140,14 @@ class DirectoryTree:
 @click.command()
 @click.argument('path', type=click.Path(exists=True, path_type=Path))
 @click.option('--clipboard/--no-clipboard', default=True, help='Copy to clipboard')
-def cli(path: Path, clipboard: bool):
+@click.option('--ignore', '-i', multiple=True, help='Additional patterns to ignore')
+def cli(path: Path, clipboard: bool, ignore: tuple[str, ...]):
     """Generate a tree structure of the specified directory and optionally copy to clipboard."""
     try:
-        tree_generator = DirectoryTree(path)
+        # Combine default patterns with any additional patterns from CLI
+        ignore_patterns = DirectoryTree.DEFAULT_IGNORE_PATTERNS | set(ignore)
+        
+        tree_generator = DirectoryTree(path, ignore_patterns=ignore_patterns)
         tree = tree_generator.generate()
         
         if not tree:
